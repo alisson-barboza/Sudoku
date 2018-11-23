@@ -12,22 +12,86 @@ int main(){
 }
 
 
-int * solveSudoku(int matrix[][_size]){
+int * solveSudoku(int matrix[][_size], int row, int column){
     int filler = 0;
-    while(1){
-        int row = 0, column = 0;
-        //first trying to fill the columns with the correct numbers
-        for(; column < _size; column++){
-            //checking if the column has no number in it
-            if(matrix[row][column] == 0){
-                
-                if(!(checkColumn(fillVectorByColumn(matrix, column), filler)) && !(checkRow(fillVectorByRow(matrix, row), filler)) && ){
-                    
-                }
-            }
+    int i = 0;
+    int rAux, cAux;
+
+    if(matrix[row][column] != 0){
+        if(row == (_size - 1) && column == (_size - 1)){
+            return matrix;            
+        }
+
+        if(column < (_size - 1)){
+            column++;
 
         }
+        else{
+            if(row < (_size - 1)){
+                row++;
+                column = 0;
+            }
+        }
+
+        return solveSudoku(matrix, row, column);
     }
+
+    if(matrix[row][column] == 0){
+        while(i < _size - 1){
+            if(!checkColumn(fillVectorByColumn(matrix, column), filler) && !checkRow(fillVectorByRow(matrix, row), filler) 
+            && !checkSquare(fillSquare(matrix, row, column))){
+                matrix[row][column] = filler;
+            }else{
+                rAux = row + 1;
+            }
+
+            i++;
+        }
+
+    }
+
+}
+//fill a matrix smaller than the original with the numbers in a given "square"
+int * fillSquare(int matrix[][_size], int row, int column){
+    int newMatrix[_size/2][_size/2] = {0};
+    int r, c, stopC, stopR;
+    int rAux, cAux;
+
+    switch(row){
+        case r<2:
+        r = 0;  
+        break;
+        case r<5:
+        r = 3;
+        break;
+        case r<8:
+        r = 6;
+        break;        
+    }
+
+    switch(column){
+        case c<2:
+        c = 0;  
+        break;
+        case c<5:
+        c = 3;
+        break;
+        case c<8:
+        c = 6;
+        break;
+    }
+
+    stopR = r + 3;
+    stopC = c + 3;
+
+    for(cAux = 0;c<stopC; c++){
+        for(rAux = 0;r<stopR;r++){
+            newMatrix[cAux][rAux] = matrix[c][r]
+            rAux++;
+        }
+        cAux++;
+    }
+    return newMatrix;
 }
 
 //fill a vector with the numbers in a given colmumn of a matrix and return it
